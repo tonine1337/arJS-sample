@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<title>Hello, AR Cube!</title>
 	<!-- include three.js library -->
-	<script src='js/three.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.js'></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src='js/MTLLoader.js'></script>
@@ -144,21 +144,56 @@
 			// 			}, onProgress, onError);
 			// 	});
 
-			new THREE.MTLLoader()
-				.setPath('models/')
-				.load('Lungs_2.mtl', function (materials) {
-					materials.preload();
-					new THREE.OBJLoader()
-						.setMaterials(materials)
-						.setPath('models/')
-						.load('Lungs_2.obj', function (group) {
-							human = group.children[0];
-							human.material.side = THREE.DoubleSide;
-							human.position.y = 1;
-							human.scale.set(0.15, 0.15, 0.15);
-							markerRoot1.add(human);
-						}, onProgress, onError);
-				});
+			// new THREE.MTLLoader()
+			// 	.setPath('models/')
+			// 	.load('Lungs_2.mtl', function (materials) {
+			// 		materials.preload();
+			// 		new THREE.OBJLoader()
+			// 			.setMaterials(materials)
+			// 			.setPath('models/')
+			// 			.load('Lungs_2.obj', function (group) {
+			// 				human = group.children[0];
+			// 				human.material.side = THREE.DoubleSide;
+			// 				human.position.y = 1;
+			// 				human.scale.set(0.15, 0.15, 0.15);
+			// 				markerRoot1.add(human);
+			// 			}, onProgress, onError);
+			// 	});
+
+			var loaderGLTF = new THREE.GLTFLoader();
+			var light = new THREE.PointLight(0xffffff);
+			var lightTwo = new THREE.PointLight(0xffffff, 0.5);
+
+			light.position.set(-100, 200, 100);
+			lightTwo.position.set(100, 200, 100);
+
+			markerRoot1.add(light);
+			markerRoot1.add(lightTwo);
+
+			// Load a glTF resource
+			loaderGLTF.setPath('models/').load(
+				// resource URL
+				'glb/body_1_f.glb',
+				// called when the resource is loaded
+				function (gltf) {
+					console.log(gltf);
+					gltf.scene.position.y = 1;
+					gltf.scene.scale.set(0.15, 0.15, 0.15);
+					markerRoot1.add(gltf.scene);
+				},
+				// called while loading is progressing
+				function (xhr) {
+
+					console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+
+				},
+				// called when loading has errors
+				function (error) {
+
+					console.log('An error happened');
+
+				}
+			);
 		}
 
 
