@@ -35,7 +35,7 @@
 
 		var markerRoot1, markerRoot2;
 
-		var mesh1, mesh0;
+		var mesh1, mesh0, human;
 
 		initialize();
 		animate();
@@ -127,21 +127,36 @@
 			function onProgress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); }
 			function onError(xhr) { console.log('An error happened'); }
 
+			// new THREE.MTLLoader()
+			// 	.setPath('models/')
+			// 	.load('Inhaler_4.mtl', function (materials) {
+			// 		materials.preload();
+			// 		new THREE.OBJLoader()
+			// 			.setMaterials(materials)
+			// 			.setPath('models/')
+			// 			.load('Inhaler_4.obj', function (group) {
+			// 				mesh0 = group.children[0];
+			// 				mesh0.material.side = THREE.DoubleSide;
+			// 				mesh0.position.y = 0.01;
+			// 				mesh0.scale.set(0.05, 0.05, 0.05);
+			// 				mesh0.rotation.x = -Math.PI / 2;
+			// 				markerRoot1.add(mesh0);
+			// 			}, onProgress, onError);
+			// 	});
+
 			new THREE.MTLLoader()
 				.setPath('models/')
-				.load('Inhaler_4.mtl', function (materials) {
+				.load('Lungs_2.mtl', function (materials) {
 					materials.preload();
 					new THREE.OBJLoader()
 						.setMaterials(materials)
 						.setPath('models/')
-						.load('Inhaler_4.obj', function (group) {
-							mesh0 = group.children[0];
-							mesh0.material.side = THREE.DoubleSide;
-							mesh0.position.y = 0.01;
-							mesh0.scale.set(0.05, 0.05, 0.05);
-							mesh0.rotation.x = -Math.PI / 2;
-							markerRoot1.add(mesh0);
-
+						.load('Lungs_2.obj', function (group) {
+							human = group.children[0];
+							human.material.side = THREE.DoubleSide;
+							human.position.y = 1;
+							human.scale.set(0.15, 0.15, 0.15);
+							markerRoot1.add(human);
 						}, onProgress, onError);
 				});
 		}
@@ -151,6 +166,10 @@
 			// update artoolkit on every frame
 			if (arToolkitSource.ready !== false)
 				arToolkitContext.update(arToolkitSource.domElement);
+
+			// if (human) {
+			// 	human.rotation.y += 5 * Math.PI / 180;
+			// }
 		}
 
 
