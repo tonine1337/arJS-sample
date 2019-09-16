@@ -5,6 +5,8 @@
 	<title>Hello, AR Cube!</title>
 	<!-- include three.js library -->
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.js'></script>
+	<script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src='js/MTLLoader.js'></script>
@@ -26,7 +28,27 @@
   Example created by Lee Stemkoski: https://github.com/stemkoski
   Based on the AR.js library and examples created by Jerome Etienne: https://github.com/jeromeetienne/AR.js/
 -->
+	<div id="container">
+		<video autoplay="true" id="videoElement">
 
+		</video>
+		<a-scene>
+			<a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+		</a-scene>
+	</div>
+	<!-- <script>
+		var video = document.querySelector("#videoElement");
+
+		if (navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices.getUserMedia({ video: true })
+				.then(function (stream) {
+					video.srcObject = stream;
+				})
+				.catch(function (err0r) {
+					console.log("Something went wrong!");
+				});
+		}
+	</script> -->
 	<script>
 
 		var scene, camera, renderer, clock, deltaTime, totalTime;
@@ -162,12 +184,12 @@
 
 			var loaderGLTF = new THREE.GLTFLoader();
 			var light = new THREE.PointLight(0xffffff);
-			var lightTwo = new THREE.PointLight(0xffffff, 0.5);
+			var lightTwo = new THREE.PointLight(0xffffff, 0.7);
 
 			light.position.set(-100, 200, 100);
 			lightTwo.position.set(100, 200, 100);
-
-			markerRoot1.add(light);
+			// lightTwo.LightShadow(camera);
+			// markerRoot1.add(light);
 			markerRoot1.add(lightTwo);
 
 			// Load a glTF resource
@@ -176,6 +198,7 @@
 				'glb/body_1_f.glb',
 				// called when the resource is loaded
 				function (gltf) {
+					human = gltf;
 					console.log(gltf);
 					gltf.scene.position.y = 1;
 					gltf.scene.scale.set(0.15, 0.15, 0.15);
@@ -202,9 +225,9 @@
 			if (arToolkitSource.ready !== false)
 				arToolkitContext.update(arToolkitSource.domElement);
 
-			// if (human) {
-			// 	human.rotation.y += 5 * Math.PI / 180;
-			// }
+			if (human) {
+				human.scene.rotation.y += 1 * Math.PI / 180;
+			}
 		}
 
 
